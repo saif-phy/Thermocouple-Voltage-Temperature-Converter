@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>"T" type Thermocouple Voltage (mV) → Temperature (K) and Temperature (K) → Voltage (mV)  Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-section, .output-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1px;
+            width: 100%;
+        }
+
+        .left-section, .right-section {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 50%;
+            font-size: 10px;
+			
+        }
+
+        .arrow-section {
+            font-size: 35px;
+        }
+
+        h1, h2, h3 {
+            text-align: center;
+        }
+
+        p {
+            margin-bottom: 5px;
+            margin-top: 0;
+        }
+
+        input[type="number"] {
+            width: 50%;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 7px;
+            font-size: 10px;
+            margin-bottom: 10px;
+        }
+
+
+
+
+        .result-box {
+            padding: 5px;
+			width: 50%;
+            background-color: #f9f9f9;
+            border: 5px solid #ccc;
+            border-radius: 7px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .result {
+            font-size: 12px;
+            color: red;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Thermocouple voltage-temperature converter</h1> 
+
+        
+        <!-- Input and output section for voltage to temperature calculation -->
+        <div class="input-section">
+            <div class="left-section">
+                <p>Enter Voltage in mV</p>
+				
+                <input type="number" id="xInput">
+            </div>
+            <div class="arrow-section">
+                →
+            </div>
+            <div class="right-section">
+                <p>Calculated Temperature (K)</p>
+                <div class="result-box" id="result-box">
+                    <p class="result" id="result"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input and output section for temperature to voltage calculation -->
+		<div class="input-section">
+			<div class="left-section">
+				<p>Calculated Voltage (mV)</p>
+				<div class="result-box" id="voltage-result-box">
+					<p class="result" id="voltage-result"></p>
+				</div>
+			</div>
+            <div class="arrow-section">
+				←
+            </div>
+			<div class="right-section">
+				<p>Enter Temperature in K</p> 
+				
+				<input type="number" id="tempInput">
+				
+			</div>
+		</div>
+	<table>
+        <table>
+        <tr>
+            <th>Thermocouple Type</th>
+            <th>Input Temperature Range (K)</th>
+            <th>Input Voltage Range (mV)</th>
+        </tr>
+        <tr>
+            <td>Type T</td>
+            <td>3.15 - 673.15</td>
+            <td>-6.248 - 15.455</td>
+        </tr>
+        <tr>
+            <td>Type K</td>
+            <td>3.15 - 1645.15</td>
+            <td>-5.891 - 54.886</td>
+        </tr>
+    </table>
+
+
+    <script>
+        function calculateY() {
+            var x = parseFloat(document.getElementById('xInput').value);
+            var y;
+
+            if (x >= -6.248 && x <= -6.167) {
+                var coefficients = [883547.7094213739, 304937.2902116129, 8763.767753288976, -6147.336099992007, -537.9399191805425]; 
+                y = calculatePolynomial(coefficients, x);
+            } 
+            else if (x >= -6.167 && x <= -5.604) {
+                var coefficients = [-41799.0307551039, 389.67103212530475, 12750.513037264098, 4389.599245487014, 568.6710194644021, 26.228774960745127]; 
+                y = calculatePolynomial(coefficients, x) + 273.15;
+            } 
+            else if (x >= -5.604 && x <= 0) {
+                var coefficients = [0, 25.949192, -0.21316967, 0.79018692, 0.42527777, 0.13304473, 0.020241446, 0.0012668171]; 
+                y = calculatePolynomial(coefficients, x) + 273.15;
+            }
+            else if (x >= 0 && x <= 15.455) {
+                var coefficients = [0, 25.928, -0.7602961, 0.04637791, -0.002165394, 0.00006048144, -0.0000007293422]; 
+                y = calculatePolynomial(coefficients, x) + 273.15;
+            }
+            else {
+                document.getElementById('result').innerText = "Error: Voltage out of range. Enter a voltage between -6.248 to 15.455 mV.";
+                return; // Exit the function
+            }
+            
+            y = y.toFixed(1); // Limit temp to 1 decimal place
+            document.getElementById('result').innerText =  y + " K";
+        }
+		function calculateyn() {
+			var x = parseFloat(document.getElementById('tempInput').value);
+			var yn;
+			x = x - 273.15;
+			if (x >= -270 && x <= 0) {
+				var coefficients = [0, 0.387481063640 * Math.pow(10, -1), 0.44194434347 * Math.pow(10, -4), 0.11844323105 * Math.pow(10, -6), 0.20032973554 * Math.pow(10, -7),0.90138019559 * Math.pow(10, -9),0.22651156593 * Math.pow(10, -10),0.36071154205 * Math.pow(10, -12),0.38493939883 * Math.pow(10, -14),0.28213521925 * Math.pow(10, -16),0.14251594779 * Math.pow(10, -18),0.48768662286 * Math.pow(10, -21),0.1079553927 * Math.pow(10, -23),0.13945027062 * Math.pow(10, -26),0.79795153927 * Math.pow(10, -30)]; 
+				yn = calculatePolynomial(coefficients, x);
+			} 
+			else if (x >= 0 && x <= 400) {
+				var coefficients = [0, 0.387481063640 * Math.pow(10, -1), 0.332922278800 * Math.pow(10, -4), 0.20618243404 * Math.pow(10, -6), -0.21882256846 * Math.pow(10, -8),0.10996880928 * Math.pow(10, -10),-0.30815758772 * Math.pow(10, -13),0.4547913529 * Math.pow(10, -16),-0.27512901673 * Math.pow(10, -19)]; 
+				yn = calculatePolynomial(coefficients, x);
+			} 
+			else {
+                document.getElementById('voltage-result').innerText = "Error: Temperature out of range. Enter a Temperature between 3.15 to 673.15 K.";
+                return; // Exit the function
+            }
+			yn = yn.toFixed(3);
+			document.getElementById('voltage-result').innerText =  yn + " mV";
+		}
+				
+        function calculatePolynomial(coefficients, x) {
+            var y = 0;
+            for (var i = 0; i < coefficients.length; i++) {
+                y += coefficients[i] * Math.pow(x, i);
+            }
+            return y;
+        }
+
+			// Add event listener for Enter key press on the xInput field
+		document.getElementById('xInput').addEventListener('keyup', function(event) {
+			if (event.keyCode === 13) {
+				// Enter key has been pressed
+				calculateY();
+				}
+		});
+							// Add event listener for Enter key press on the xInput field
+		document.getElementById('tempInput').addEventListener('keyup', function(event) {
+			if (event.keyCode === 13) {
+				// Enter key has been pressed
+				calculateyn();
+			}
+        });
+    </script>
+	
+</body>
+</html>
