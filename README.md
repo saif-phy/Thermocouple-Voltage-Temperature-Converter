@@ -1,5 +1,9 @@
-This is an html based code that convertes voltage to temperature and temperature to voltage for T type and K type thermocouples. 
-It primarily used co-efficients provided by NIST. 
-However, the missing co-efficients at lower temperatures has been added through fitting that have accuracy around 0.05 K. 
+This is an HTML-based code that converts voltage (mV) to temperature (K) and temperature (K) to voltage (mV) for T-type and K-type thermocouples. 
+It primarily uses coefficients provided by NIST. 
+However, in NIST, coefficients below 65 K are not available in certain instances.
+Extensive fitting was done to calculate the missing coefficients and their accuracy was estimated to be 0.05 K.
+This code contains the original NIST coefficients and the missing coefficients at lower temperatures. 
+For the T-type thermocouple, the range of input temperatures is 3.15 - 673.15 K, and the range of input voltage is -6.248 - 15.455 mV.
+For K-type thermocouple, the range of input temperatures is 3.15 - 1645.15 K, and the range of input voltage is -5.891 - 54.886 mV.
 To calculate voltage/temperature first select the type of Thermocouple and then input the value in the input field and press the enter key. 
-The result will be shown on the result field.
+The result will be shown in the result field.
