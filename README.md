@@ -7,3 +7,4 @@ For the T-type thermocouple, the range of input temperatures is 3.15 - 673.15 K,
 For K-type thermocouple, the range of input temperatures is 273.15 - 1645.15 K, and the range of input voltage is 0 - 20.644 mV.
 To calculate voltage/temperature first select the type of Thermocouple and then input the value in the input field and press the enter key. 
 The result will be shown in the result field.
+![convert](https://github.com/saif-phy/Thermocouple-Voltage-Temperature-Converter/assets/170793998/b4e10121-02a5-4a2c-a5d8-547b514c90e7)
